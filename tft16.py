@@ -66,7 +66,7 @@ T = {
         "tag_unlock": "🟠 **REQUIRES {} UNLOCK(S)**",
         "err_unlock": "Cannot find 4 regions with current slots.",
         "err_combat": "No valid team found. Try adding Emblems or changing Level.",
-        "spinner_unlock": "Scanning 7, 8, 9 slot combinations...",
+        "spinner_unlock": "Scanning slot combinations...",
         "spinner_combat": "Finding teammates for Ryze...",
         "res_option": "Option",
         "res_regions": "Regions",
@@ -251,14 +251,22 @@ def solve_unlock_mission(slots, user_emblems):
     unlock_best = [u for u in region_units if any(u['name'] == uu['name'] for uu in UNLOCKABLE_UNITS)][:15]
     search_pool = standard_best + unlock_best
 
-    # --- LOGIC MỚI: BẮT ĐẦU TÌM TỪ 7 SLOT ---
-    # Danh sách size cần tìm kiếm: 7 -> 8 -> [slots]
-    search_sizes = [7, 8]
-    if slots > 8:
-        search_sizes.append(slots)
-        
-    # Loại bỏ size trùng nhau và sắp xếp tăng dần (Ví dụ: [7, 8, 9])
-    search_sizes = sorted(list(set(search_sizes)))
+    # --- LOGIC: SEARCH RANGE BASED ON PLAYER LEVEL ---
+    # Level 4: [4]
+    # Level 5: [4, 5]
+    # Level 6: [4, 5, 6]
+    # Level 7: [5, 6, 7]
+    # Level 8: [6, 7, 8]
+    if slots == 4:
+        search_sizes = [4]
+    elif slots == 5:
+        search_sizes = [4, 5]
+    elif slots == 6:
+        search_sizes = [4, 5, 6]
+    elif slots == 7:
+        search_sizes = [5, 6, 7]
+    else:  # slots == 8
+        search_sizes = [6, 7, 8]
 
     for current_size in search_sizes:
         loop_count = 0 
@@ -645,7 +653,7 @@ def solve_three_strategies(pool, slots, user_emblems, prioritize_strength=False)
     return [opt1, opt2, opt3]
 
 # --- UI ---
-st.title("🧙‍♂️ TFT Set 16: Ryze AI Tool")
+st.title("🧙‍♂️ TFT Set 16: World Runes Tool")
 st.markdown("**Strategic Diversity:** Full Optimization.")
 
 with st.sidebar:
@@ -658,7 +666,16 @@ with st.sidebar:
     t = T[lang_choice] # Current Language
 
     # --- LEVEL SELECTION ---
-    level = st.selectbox(t["level"], [4, 5, 6, 7, 8])
+    level_options = {
+        "4 Slots": 4,
+        "5 Slots": 5,
+        "6 Slots": 6,
+        "7 Slots": 7,
+        "8 Slots": 8
+    }
+    level_choice = st.selectbox(t["level"], level_options.keys())
+    level = level_options[level_choice]
+    st.markdown(f"**Slots Available:** {level} 🟡", unsafe_allow_html=True)
     st.markdown("---")
     run = st.button(t["btn_find"], type="primary")
     st.markdown("---")
