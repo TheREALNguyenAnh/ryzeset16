@@ -60,7 +60,7 @@ T = {
         "donate_title": "### ☕ Support Dev",
         "donate_btn": "☕ Buy Me a Coffee",
         "select_modes": "📝 Select Modes (Empty = Run All):",
-        "tabs": ["Low Cost (Eco)", "Standard", "EXODIA", "🔓 UNLOCK RYZE"],
+        "tabs": ["Low Cost (Eco)", "Standard", "EXODIA", "WORLD RUNES MISSION"],
         "mission_info": "🏆 **Mission:** Activate 4 Regions (Prioritizes 7+ Slots & 0 Unlock).",
         "tag_basic": "🟢 **BASIC SHOP (AVAILABLE)**",
         "tag_unlock": "🟠 **REQUIRES {} UNLOCK(S)**",
